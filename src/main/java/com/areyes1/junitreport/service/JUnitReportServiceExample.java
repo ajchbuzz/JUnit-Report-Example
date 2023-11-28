@@ -21,7 +21,11 @@ public class JUnitReportServiceExample {
 	public ServiceObject postProcessing(ServiceObject serviceObject) {
 		System.out.println(">>> processing - started");
 		serviceObject.setMetaData("{{{data1:data2},{data3:data4}},{status:complete}}");
-		serviceObject.setStatus("Complete");
+		if(serviceObject.getStatus().equals("Proceessed")){
+			serviceObject.setStatus("Complete");
+		} else {
+			serviceObject.setStatus("Incomplete");
+		}
 		System.out.println(">>> processing - done");
 		return serviceObject;
 	}

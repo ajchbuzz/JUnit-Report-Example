@@ -2,18 +2,17 @@ package com.areyes1.junitreport.service;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 public class JUnitReportServiceExampleTest {
 
 
-	private JUnitReportServiceExample junitAssertEqualsServiceSample;
-	private ServiceObject serviceObject;
-	@Before
+	private JUnitReportServiceExample junitAssertEqualsServiceSample  = new JUnitReportServiceExample();
+
+	@Test
 	public void setData() {
-		serviceObject = new ServiceObject();
-		junitAssertEqualsServiceSample = new JUnitReportServiceExample();
+		ServiceObject serviceObject = new ServiceObject();
 		junitAssertEqualsServiceSample.initiateMetaData(serviceObject);
+		assertEquals(serviceObject.getStatus(),"New");
 	}
 
 	@Test
@@ -21,31 +20,31 @@ public class JUnitReportServiceExampleTest {
 		//	processed the item
 		ServiceObject newServiceObject = new ServiceObject();
 		junitAssertEqualsServiceSample.initiateMetaData(newServiceObject);
-		junitAssertEqualsServiceSample.processObject(serviceObject);
-		assertEquals(serviceObject,newServiceObject);
-	}
-	
-	@Test
-	public void testAssertEquals() {
-		junitAssertEqualsServiceSample.processObject(serviceObject);
-		assertEquals(serviceObject,this.serviceObject);
+		junitAssertEqualsServiceSample.processObject(newServiceObject);
+		assertEquals(newServiceObject.getStatus(),"Processed");
 	}
 
 	@Test
-	public void testAssertEqualsWithMessage() {
-		junitAssertEqualsServiceSample.processObject(serviceObject);
-		assertEquals(
-				"Same Object",
-				serviceObject,serviceObject);
-	}
-	@Test
-	public void testAssertEqualsFalseWithMessage() {
+	public void testAssertEqualsFalsePostProcessing() {
+		//	processed the item
 		ServiceObject newServiceObject = new ServiceObject();
-		junitAssertEqualsServiceSample.postProcessing(serviceObject);
-		assertEquals(
-				"Not the Same Object",
-				newServiceObject,serviceObject);
+		junitAssertEqualsServiceSample.initiateMetaData(newServiceObject);
+		junitAssertEqualsServiceSample.postProcessing(newServiceObject);
+		assertEquals(newServiceObject.getStatus(),"Incomplete");
 	}
+
+	@Test
+	public void testPostProcessing() {
+		ServiceObject object = new ServiceObject();
+		object.setStatus("Processed");
+		
+		ServiceObject result = junitAssertEqualsServiceSample.postProcessing(object);
+		
+		assertEquals("Incomplete", result.getStatus());
+	}
+
+	
+	
 
 
 }
